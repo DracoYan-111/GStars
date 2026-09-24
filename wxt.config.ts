@@ -5,7 +5,7 @@ const REPOSITORY_URL = 'https://github.com/DracoYan-111/GStars';
 export default defineConfig({
   zip: {
     // The Firefox sources zip (submitted to AMO review) ignores .gitignore, so local-only files are excluded here
-    excludeSources: ['CLAUDE.md', '.claude/**', 'evals/.cache/**'],
+    excludeSources: ['CLAUDE.md', '.claude/**', 'evals/.cache/**', '.env*'],
   },
   manifest: ({ browser }) => ({
     // Name/description via _locales (public/_locales/*/messages.json), shown per store locale
