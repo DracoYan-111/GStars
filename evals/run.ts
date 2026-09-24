@@ -1,4 +1,4 @@
-// Eval: pnpm tsx evals/run.ts
+// Eval: pnpm eval (reads keys from .env in the project root when present)
 // Env vars:
 //   GITHUB_TOKEN, JEV_API_KEY   required
 //   MIN_SCORE / FULL_SCAN_LIMIT / EVAL_CONCURRENCY   override defaults
@@ -35,7 +35,7 @@ const GITHUB_CONCURRENCY = 6;
 function requireEnv(name: string): string {
   const value = process.env[name]?.trim();
   if (!value) {
-    console.error(`Missing env var  ${name}`);
+    console.error(`Missing env var ${name}`);
     process.exit(1);
   }
   return value;
@@ -76,7 +76,7 @@ async function loadStars(username: string, token: string, refresh: boolean): Pro
     ),
   );
   writeJson(file, repos);
-  console.log(`  Fetched ${username}   ${repos.length}  stars`);
+  console.log(`  Fetched ${repos.length} stars of ${username}`);
   return repos;
 }
 
@@ -111,7 +111,7 @@ async function main(): Promise<void> {
   }
 
   let unsaved = 0;
-  const rows: { query: string; jev: ReturnType<typeof metrics>; keyword: ReturnType<typeof metrics> }[] = [];
+  const rows: { query: string; jev: ReturnType<typeof metrics>; keyword: ReturnType<typeof metrics>; passing: number }[] = [];
 
   for (const q of queries) {
     const repos = starsByUser.get(q.username) ?? [];
@@ -157,16 +157,19 @@ async function main(): Promise<void> {
       ),
     );
 
-    const jev = metrics(rankResults(scored, minScore).map((r) => r.fullName), q.expected);
+    const ranked = rankResults(scored, minScore);
+    const jev = metrics(ranked.map((r) => r.fullName), q.expected);
     const keyword = metrics(recalledNames, q.expected);
-    rows.push({ query: q.query, jev, keyword });
+    rows.push({ query: q.query, jev, keyword, passing: ranked.length });
     const hit = jev.firstHit > 0 ? `#${jev.firstHit}` : 'miss';
-    console.log(`  recall@${TOP_K}=${jev.recall.toFixed(2)} firstHit=${hit.padEnd(4)} keywordFirstHit=${keyword.firstHit > 0 ? '#' + keyword.firstHit : 'miss'}${failures ? ` failed=${failures}` : ''}  ${q.query}`);
+    console.log(`  recall@${TOP_K}=${jev.recall.toFixed(2)} firstHit=${hit.padEnd(4)} shown=${String(ranked.length).padEnd(3)} keywordFirstHit=${keyword.firstHit > 0 ? '#' + keyword.firstHit : 'miss'}${failures ? ` failed=${failures}` : ''}  ${q.query}`);
   }
   writeJson(SCORES_FILE, scores);
 
   console.log('\n=== Summary ===');
   console.log(`Jev     recall@${TOP_K}=${average(rows.map((r) => r.jev.recall)).toFixed(3)}  MRR=${average(rows.map((r) => r.jev.rr)).toFixed(3)}`);
+  // Fewer results above MIN_SCORE (with recall held) means less noise shown to the user
+  console.log(`Jev     avg results shown (score >= ${minScore}): ${average(rows.map((r) => r.passing)).toFixed(1)}`);
   console.log(`keyword recall@${TOP_K}=${average(rows.map((r) => r.keyword.recall)).toFixed(3)}  MRR=${average(rows.map((r) => r.keyword.rr)).toFixed(3)}  (MiniSearch recall only, baseline)`);
 }
 

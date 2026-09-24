@@ -35,7 +35,7 @@
     "zip:firefox": "wxt zip -b firefox",
     "compile": "tsc --noEmit",
     "test": "vitest run",
-    "eval": "tsx evals/run.ts",
+    "eval": "tsx --env-file-if-exists=.env evals/run.ts",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
