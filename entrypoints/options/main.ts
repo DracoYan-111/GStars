@@ -1,4 +1,4 @@
-import { normalizeSettings, type Settings } from '@/lib/core/settings';
+import { DEFAULT_SETTINGS, normalizeSettings, type Settings } from '@/lib/core/settings';
 import type { RuntimeRequest, RuntimeResponse } from '@/lib/messages';
 import { loadSettings, saveSettings } from '@/lib/settings';
 import { detectLocale, resolveLocale, t, type Locale } from '@/lib/i18n';
@@ -32,7 +32,13 @@ function applyLocale(l: Locale): void {
   byId('hint-token').textContent = t(l, 'githubTokenHint');
   byId('legend-params').textContent = t(l, 'paramsLegend');
   byId('label-fullscan').firstChild!.textContent = t(l, 'fullScanLabel');
-  byId('hint-fullscan').textContent = t(l, 'fullScanHint');
+  byId('hint-fullscan').textContent = t(l, 'fullScanHint', { default: DEFAULT_SETTINGS.fullScanLimit });
+  byId('hint-minscore').textContent = t(l, 'minScoreHint', { default: DEFAULT_SETTINGS.minScore });
+  byId('hint-sync').textContent = t(l, 'syncConcurrencyHint', { default: DEFAULT_SETTINGS.syncConcurrency });
+  byId('hint-jev').textContent = t(l, 'jevConcurrencyHint', { default: DEFAULT_SETTINGS.jevConcurrency });
+  byId('hint-locale').textContent = t(l, 'languageHint');
+  const autoOption = localeInput.querySelector<HTMLOptionElement>('option[value="auto"]');
+  if (autoOption) autoOption.textContent = t(l, 'localeAuto');
   byId('label-minscore').firstChild!.textContent = t(l, 'minScoreLabel');
   byId('label-sync').firstChild!.textContent = t(l, 'syncConcurrencyLabel');
   byId('label-jev').firstChild!.textContent = t(l, 'jevConcurrencyLabel');

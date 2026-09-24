@@ -112,15 +112,19 @@
           <input id="fullScanLimit" type="number" min="1" step="1" />
         </label>
         <label id="label-minscore">Minimum relevance MIN_SCORE (0–3)
+          <small id="hint-minscore"></small>
           <input id="minScore" type="number" min="0" max="3" step="0.1" />
         </label>
         <label id="label-sync">Sync concurrency
+          <small id="hint-sync"></small>
           <input id="syncConcurrency" type="number" min="1" max="32" step="1" />
         </label>
         <label id="label-jev">Jev scoring concurrency
+          <small id="hint-jev"></small>
           <input id="jevConcurrency" type="number" min="1" max="64" step="1" />
         </label>
         <label id="label-locale">Language
+          <small id="hint-locale"></small>
           <select id="locale">
             <option value="auto">Auto</option>
             <option value="zh-CN">中文</option>

@@ -39,7 +39,27 @@ const STRINGS = {
   keysLegend: { 'zh-CN': '密钥（只保存在本机浏览器中）', en: 'Keys (stored only in this browser)' },
   githubTokenHint: { 'zh-CN': '无需勾选任何权限，仅用于提高 API 限流额度。', en: 'No permissions needed; only raises the API rate limit.' },
   paramsLegend: { 'zh-CN': '参数', en: 'Parameters' },
-  fullScanHint: { 'zh-CN': '仓库数不超过它时全部交给 Jev 打分，超过则只对关键词召回的前 200 个打分。', en: 'When repo count is within it, all are scored by Jev; otherwise only the top 200 keyword recalls are scored.' },
+  // Plain-language hints on the options page. {default} is filled from DEFAULT_SETTINGS.
+  fullScanHint: {
+    'zh-CN': '每次搜索让 Jev 看多少个仓库。star 数不超过这个值时，每个仓库都会打分，结果最全，但仓库越多每次新搜索越贵（1500 个约 6 美分）；超过时只给关键词最匹配的 200 个打分，便宜很多，但关键词没搜到的仓库不会出现。默认 {default}。',
+    en: 'How many repos Jev looks at per search. Up to this many stars, every repo is scored: the most complete results, but each new search costs more the more repos there are (about 6 cents for 1,500). Above it, only the 200 best keyword matches are scored: much cheaper, but repos the keywords miss never show up. Default {default}.',
+  },
+  minScoreHint: {
+    'zh-CN': '只显示分数不低于它的结果。0 = 无关，1 = 同领域但不满足，2 = 部分满足，3 = 完全满足。调高结果更少、更准；调低会多出一些沾边的结果。默认 {default}。',
+    en: 'Only results scoring at least this are shown. 0 = unrelated, 1 = same field but does not fit, 2 = partly fits, 3 = fits exactly. Higher means fewer, more precise results; lower adds loosely related ones. Default {default}.',
+  },
+  syncConcurrencyHint: {
+    'zh-CN': '同步 star 时同时抓取几批 README（每批 10 个仓库）。越大同步越快；如果同步时提示 GitHub 限流，就调小一些。一般不用改。默认 {default}。',
+    en: 'How many batches of READMEs (10 repos each) are fetched at once while syncing stars. Higher syncs faster; lower it if sync reports a GitHub rate limit. Usually no need to change. Default {default}.',
+  },
+  jevConcurrencyHint: {
+    'zh-CN': '搜索时同时给多少个仓库打分。越大结果出来越快，但不影响费用，费用只和打分的仓库数有关。如果提示 Jev 限流，就调小一些。默认 {default}。',
+    en: 'How many repos are scored at the same time during a search. Higher shows results faster but does not change the cost, which depends only on how many repos are scored. Lower it if Jev reports a rate limit. Default {default}.',
+  },
+  languageHint: {
+    'zh-CN': '插件界面显示的语言。选“自动”时跟随浏览器语言。不影响搜索：中文、英文或混着写的查询都能搜。',
+    en: 'The language of the extension interface. "Auto" follows your browser. It does not affect search: Chinese, English and mixed queries all work.',
+  },
   fullScanLabel: { 'zh-CN': '全量打分上限 FULL_SCAN_LIMIT', en: 'Full-scan limit FULL_SCAN_LIMIT' },
   minScoreLabel: { 'zh-CN': '最低相关度 MIN_SCORE（0–3）', en: 'Minimum relevance MIN_SCORE (0–3)' },
   syncConcurrencyLabel: { 'zh-CN': '同步并发数', en: 'Sync concurrency' },
@@ -52,6 +72,7 @@ const STRINGS = {
   testingJev: { 'zh-CN': 'Jev：测试中…', en: 'Jev: testing…' },
   testFailed: { 'zh-CN': '测试失败（{message}）', en: 'Test failed ({message})' },
   languageLabel: { 'zh-CN': '语言 Language', en: 'Language' },
+  localeAuto: { 'zh-CN': '自动', en: 'Auto' },
   applyForKey: { 'zh-CN': '去申请', en: 'Get one' },
   // backend errors (github / jev / search)
   githubTokenInvalid: { 'zh-CN': 'GitHub token 无效或已过期', en: 'GitHub token is invalid or expired' },
