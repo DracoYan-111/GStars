@@ -36,6 +36,7 @@
     "compile": "tsc --noEmit",
     "test": "vitest run",
     "eval": "tsx --env-file-if-exists=.env evals/run.ts",
+    "eval:usage": "tsx --env-file-if-exists=.env evals/usage.ts",
     "postinstall": "wxt prepare"
   },
   "dependencies": {
