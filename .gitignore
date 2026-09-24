@@ -1,0 +1,21 @@
+# Dependencies and build output
+node_modules
+.output
+.wxt
+dist
+*.zip
+
+# Local secrets and caches (eval script fetch results and score cache)
+.env*
+evals/.cache
+
+# Editor and OS files
+.DS_Store
+.idea
+.vscode/*
+!.vscode/extensions.json
+*.log
+
+# Claude Code project notes and local settings (local only, not committed)
+CLAUDE.md
+.claude/

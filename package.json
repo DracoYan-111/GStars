@@ -1,0 +1,52 @@
+{
+  "name": "gstars",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Browser extension that searches any GitHub user's starred repositories in natural language.",
+  "keywords": [
+    "browser-extension",
+    "chrome-extension",
+    "firefox-addon",
+    "github",
+    "github-stars",
+    "search",
+    "wxt"
+  ],
+  "homepage": "https://github.com/DracoYan-111/GStars#readme",
+  "bugs": {
+    "url": "https://github.com/DracoYan-111/GStars/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DracoYan-111/GStars.git"
+  },
+  "license": "MIT",
+  "author": "DracoYan-111",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "wxt",
+    "dev:firefox": "wxt -b firefox",
+    "build": "wxt build",
+    "build:firefox": "wxt build -b firefox",
+    "zip": "wxt zip",
+    "zip:firefox": "wxt zip -b firefox",
+    "compile": "tsc --noEmit",
+    "test": "vitest run",
+    "eval": "tsx evals/run.ts",
+    "postinstall": "wxt prepare"
+  },
+  "dependencies": {
+    "dexie": "^4.0.0",
+    "minisearch": "^7.0.0",
+    "p-limit": "^6.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^3.0.0",
+    "wxt": "^0.20.0"
+  }
+}

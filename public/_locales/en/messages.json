@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "GStars",
+    "description": "Extension name"
+  },
+  "extDescription": {
+    "message": "Search any GitHub user's starred repositories in natural language, ranked by relevance.",
+    "description": "Extension description shown in the store and extensions page (max 132 characters)"
+  }
+}

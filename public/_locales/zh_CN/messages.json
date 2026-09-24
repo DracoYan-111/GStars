@@ -1,0 +1,10 @@
+{
+  "extName": {
+    "message": "GStars",
+    "description": "扩展名称"
+  },
+  "extDescription": {
+    "message": "用自然语言检索任意 GitHub 用户的 star 仓库，按相关度排序。",
+    "description": "商店与扩展管理页展示的描述（不超过 132 个字符）"
+  }
+}

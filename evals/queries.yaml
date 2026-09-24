@@ -1,0 +1,95 @@
+# Hand-labelled: {query, username, expected}. expected lists only repos that directly satisfy the query.
+# Source: ruanyf's starred repos (236). Rerun after changing the question wording or QUESTION_VERSION: pnpm eval
+# Chinese only
+- query: 中文分词 命名实体识别
+  username: ruanyf
+  expected: [hankcs/HanLP]
+- query: 简体繁体转换
+  username: ruanyf
+  expected: [BYVoid/OpenCC]
+- query: 中文古诗词数据库
+  username: ruanyf
+  expected: [chinese-poetry/chinese-poetry]
+- query: 把网页转成 PDF 的库
+  username: ruanyf
+  expected: [westy92/html-pdf-chrome, marcbachmann/node-html-pdf, RelaxedJS/ReLaXed]
+- query: 轻量级的 CSS 框架
+  username: ruanyf
+  expected: [ajusa/lit, andybrewer/mvp, picturepan2/spectre, kylelogue/mustard-ui, jgthms/bulma, franciscop/picnic]
+- query: 翻墙 绕过防火墙的工具
+  username: ruanyf
+  expected: [trojan-gfw/trojan, erebe/wstunnel]
+- query: 实时协同编辑文档
+  username: ruanyf
+  expected: [hackmdio/codimd, ether/etherpad]
+- query: 函数式编程入门教程
+  username: ruanyf
+  expected: [MostlyAdequate/mostly-adequate-guide, hemanth/functional-programming-jargon]
+- query: git 常用技巧速查
+  username: ruanyf
+  expected: [k88hudson/git-flight-rules, git-tips/tips]
+- query: 命令行下载视频
+  username: ruanyf
+  expected: [iawia002/lux]
+- query: 微信公众号排版
+  username: ruanyf
+  expected: [lyricat/wechat-format]
+- query: 终端里的文件管理器
+  username: ruanyf
+  expected: [jarun/nnn]
+- query: 手绘风格的在线白板画图
+  username: ruanyf
+  expected: [excalidraw/excalidraw]
+# Mixed Chinese and English
+- query: HTML 转 Markdown 工具
+  username: ruanyf
+  expected: [mixmark-io/turndown]
+- query: Node.js 日志库 logger
+  username: ruanyf
+  expected: [pinojs/pino, klaudiosinani/signale]
+- query: HTTP 压测 benchmark 工具
+  username: ruanyf
+  expected: [mcollina/autocannon]
+- query: headless Chrome 浏览器自动化
+  username: ruanyf
+  expected: [puppeteer/puppeteer, schickling/chromeless, seleniumbase/SeleniumBase]
+- query: React 轻量状态管理库
+  username: ruanyf
+  expected: [developit/unistore, vesparny/statty]
+- query: 开源的 Airtable 替代品
+  username: ruanyf
+  expected: [nocodb/nocodb]
+- query: 给 PostgreSQL 自动生成 REST API
+  username: ruanyf
+  expected: [PostgREST/postgrest]
+- query: JavaScript 日期处理库
+  username: ruanyf
+  expected: [date-fns/date-fns]
+- query: 本地开发用的 HTTPS 证书
+  username: ruanyf
+  expected: [FiloSottile/mkcert]
+- query: 网页拖拽 drag and drop 库
+  username: ruanyf
+  expected: [Shopify/draggable]
+- query: JS 数据校验 schema validation
+  username: ruanyf
+  expected: [ianstormtaylor/superstruct, psvet/obey]
+- query: Markdown 语法检查 lint
+  username: ruanyf
+  expected: [DavidAnson/markdownlint]
+- query: 检测重复代码 copy paste
+  username: ruanyf
+  expected: [danielstjules/jsinspect]
+# English only
+- query: self-hosted URL shortener
+  username: ruanyf
+  expected: [thedevs-network/kutt]
+- query: personal VPN in the cloud
+  username: ruanyf
+  expected: [trailofbits/algo]
+- query: Python code formatter
+  username: ruanyf
+  expected: [psf/black]
+- query: chart image and QR code API
+  username: ruanyf
+  expected: [typpo/quickchart]
