@@ -90,10 +90,31 @@ GStars needs two keys, entered on its options page. They are stored **only in yo
 | Key | Where to get it | Notes |
 | --- | --- | --- |
 | 🐙 GitHub token | [github.com/settings/personal-access-tokens](https://github.com/settings/personal-access-tokens) | No scopes needed. It only raises the API rate limit. |
-| 🤖 Jev key | [console.typesafe.ai/keys](https://console.typesafe.ai/keys) | Used for relevance scoring. Billed by TypeSafe per request. |
+| 🤖 Jev key | [console.typesafe.ai/keys](https://console.typesafe.ai/keys) | Used for relevance scoring. Billed by TypeSafe per request, see [Cost](#-cost). |
 
 > [!TIP]
 > Click **Test connection** on the options page to check both keys before your first search.
+
+## 💰 Cost
+
+Only the **Jev key** costs money; the GitHub token is free. A new search scores each candidate repo once, so you can estimate it yourself:
+
+```text
+cost of one new search ≈ repos scored × ~950 tokens × $0.042 per million tokens
+                       ≈ repos scored × $0.00004
+```
+
+| Starred repos of the user | Repos scored | One new search |
+| --- | --- | --- |
+| 236 | all 236 | ≈ $0.01 |
+| 1,500 | all 1,500 | ≈ $0.06 |
+| more than 1,500 | top 200 keyword matches | ≈ $0.008 |
+
+- **Free:** repeating a search you already ran (scores are cached), syncing stars, and queries shorter than 2 characters.
+- **GitHub token:** a first sync of 1,500 stars uses under 5% of GitHub's hourly quota.
+- **Spend less:** lower `FULL_SCAN_LIMIT` on the options page to cap each search at about $0.008.
+
+📊 Measured numbers, charts and monthly examples: [docs/usage-and-cost.md](docs/usage-and-cost.md)
 
 ## 🚀 Usage
 

@@ -90,10 +90,31 @@ GStars 在任意 GitHub 用户的 **Stars** 页面顶部加一个搜索框。用
 | Key | 申请地址 | 说明 |
 | --- | --- | --- |
 | 🐙 GitHub token | [github.com/settings/personal-access-tokens](https://github.com/settings/personal-access-tokens) | 不需要勾选任何权限，只用来提高 API 限流额度 |
-| 🤖 Jev key | [console.typesafe.ai/keys](https://console.typesafe.ai/keys) | 用于相关度打分，由 TypeSafe 按请求计费 |
+| 🤖 Jev key | [console.typesafe.ai/keys](https://console.typesafe.ai/keys) | 用于相关度打分，由 TypeSafe 按请求计费，见[费用](#-费用) |
 
 > [!TIP]
 > 第一次搜索前，先在设置页点"测试连接"，确认两个 key 都可用。
+
+## 💰 费用
+
+只有 **Jev key** 会产生费用，GitHub token 免费。每次新搜索会给每个候选仓库打一次分，所以可以自己估算：
+
+```text
+一次新搜索的费用 ≈ 打分的仓库数 × 约 950 token × 每百万 token 0.042 美元
+                ≈ 打分的仓库数 × 0.00004 美元
+```
+
+| 用户的 star 数 | 打分的仓库数 | 一次新搜索 |
+| --- | --- | --- |
+| 236 | 全部 236 个 | 约 0.01 美元 |
+| 1500 | 全部 1500 个 | 约 0.06 美元 |
+| 超过 1500 | 关键词最匹配的 200 个 | 约 0.008 美元 |
+
+- **不花钱的操作：** 重复搜索同一句话（分数有缓存）、同步 star、少于 2 个字符的查询。
+- **GitHub token：** 首次同步 1500 个 star，用掉的不到 GitHub 每小时额度的 5%。
+- **想省钱：** 在设置页调低 `FULL_SCAN_LIMIT`，每次搜索最多约 0.008 美元。
+
+📊 实测数据、图表和每月费用示例见：[docs/usage-and-cost.md](docs/usage-and-cost.md)（英文）
 
 ## 🚀 使用
 
