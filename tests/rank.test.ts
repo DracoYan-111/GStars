@@ -29,3 +29,12 @@ test('uses default min score when not provided', () => {
   const results = [{ fullName: 'a', score: 1.4, stars: 1 }];
   expect(rankResults(results)).toEqual([]);
 });
+
+test('default threshold keeps "partially meets" (2) and hides scores below it', () => {
+  const results = [
+    { fullName: 'direct', score: 3, stars: 1 },
+    { fullName: 'partial', score: 2, stars: 1 },
+    { fullName: 'same-field', score: 1.9, stars: 100 },
+  ];
+  expect(rankResults(results).map((r) => r.fullName)).toEqual(['direct', 'partial']);
+});
