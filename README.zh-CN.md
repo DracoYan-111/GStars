@@ -37,6 +37,16 @@
 
 ---
 
+## 🎬 演示视频
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=Mcx5Z2EVFkg" title="在 YouTube 上观看 GStars 演示">
+    <img src="docs/images/demo-video.jpg" alt="GStars 演示视频：点击在 YouTube 上观看" width="720">
+  </a>
+  <br>
+  <sub>▶ 点击图片在 <a href="https://www.youtube.com/watch?v=Mcx5Z2EVFkg">YouTube</a> 上观看演示</sub>
+</div>
+
 ## ✨ GStars 是什么？
 
 GStars 在任意 GitHub 用户的 **Stars** 页面顶部加一个搜索框。用一句话描述你想找的东西，中文、英文或混着写都行，比如 `claude code 节约token skills`，它会从这个用户 star 过的全部仓库里找出相关的。

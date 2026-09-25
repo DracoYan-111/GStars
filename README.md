@@ -37,6 +37,16 @@
 
 ---
 
+## 🎬 Demo
+
+<div align="center">
+  <a href="https://www.youtube.com/watch?v=Mcx5Z2EVFkg" title="Watch the GStars demo on YouTube">
+    <img src="docs/images/demo-video.jpg" alt="GStars demo video: click to watch on YouTube" width="720">
+  </a>
+  <br>
+  <sub>▶ Click to watch the demo on <a href="https://www.youtube.com/watch?v=Mcx5Z2EVFkg">YouTube</a></sub>
+</div>
+
 ## ✨ What is GStars?
 
 GStars adds a search box to the top of any GitHub user's **Stars** page. Describe what you are looking for — in English, Chinese, or a mix, such as `claude code skills to save tokens` — and it finds the matching repositories among everything that user has starred.
