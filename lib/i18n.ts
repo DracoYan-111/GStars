@@ -16,6 +16,7 @@ const STRINGS = {
   unknownError: { 'zh-CN': '未知错误', en: 'Unknown error' },
   retry: { 'zh-CN': '重试', en: 'Retry' },
   scoring: { 'zh-CN': '正在用 Jev 打分排序…', en: 'Scoring with Jev…' },
+  matchingPlaceholder: { 'zh-CN': '正在匹配最优结果…', en: 'Finding the best match…' },
   noResults: { 'zh-CN': '没有找到相关仓库', en: 'No matching repos found' },
   updatedAt: { 'zh-CN': '更新于 {time}', en: 'Updated {time}' },
   justNow: { 'zh-CN': '刚刚', en: 'just now' },

@@ -50,6 +50,8 @@ input[type="search"] {
 /* Hides the native clear button to avoid overlapping the search button */
 input[type="search"]::-webkit-search-cancel-button { display: none; }
 input[type="search"]:focus { outline: 2px solid var(--fgColor-accent, #0969da); outline-offset: -1px; }
+/* While Jev ranks, the hint in the empty input takes the accent color so it reads as status, not a prompt */
+input[type="search"].matching::placeholder { color: var(--fgColor-accent, #0969da); opacity: 1; }
 input[type="search"]:disabled { cursor: progress; background: var(--bgColor-muted, #f6f8fa); }
 .icon-button:disabled { cursor: progress; opacity: 0.5; background: transparent; }
 /* Sync progress ring: overlays the input border, clockwise from the top-left (stroke-dasharray set by script) */

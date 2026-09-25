@@ -1,6 +1,7 @@
 // Search panel injected into the stars page. Lives in Shadow DOM, style-isolated from GitHub.
 // All text is written via textContent; repo info is never parsed as HTML.
 import type { ProgressState, RepoResult } from '../messages';
+import { MIN_JEV_QUERY_LENGTH } from '../core/rank';
 import { detectLocale, PLACEHOLDER_EXAMPLES, t, type Locale, type LocaleSetting } from '../i18n';
 import searchIconSvg from '@/assets/icons/search.svg?raw';
 import shuffleIconSvg from '@/assets/icons/shuffle-fill.svg?raw';
@@ -92,10 +93,14 @@ function openRepo(repo: RepoResult | undefined): void {
   if (repo && repo.htmlUrl.startsWith(REPO_URL_PREFIX)) window.open(repo.htmlUrl, '_blank', 'noopener,noreferrer');
 }
 
-function renderItem(repo: RepoResult, index: number, selected: boolean): HTMLLIElement {
+/**
+ * `isFinal`: all Jev scores are in. Scores arrive in batches and the order can still change until then,
+ * so the thumbs-up is only given to the final top result, never to a provisional leader.
+ */
+function renderItem(repo: RepoResult, index: number, selected: boolean, isFinal: boolean): HTMLLIElement {
   const item = el('li');
-  // Top result after Jev scoring: a shaking thumbs-up icon at its top-right corner
-  if (index === 0 && repo.score !== undefined) {
+  // Final top result after Jev scoring: a shaking thumbs-up icon at its top-right corner
+  if (index === 0 && isFinal && repo.score !== undefined) {
     item.classList.add('top');
     const badge = el('span', 'top-badge');
     badge.title = t(activeLocale, 'topMatch');
@@ -207,10 +212,49 @@ export function createPanel(username: string, handlers: PanelHandlers, localeSet
   // When the user starts acting (keys, paste, ...), the in-flight random sentence completes at once to avoid mixing with input
   input.addEventListener('beforeinput', () => typewriter.finish());
 
+  /**
+   * While Jev is ranking, the query is taken out of the input and a "finding the best match" hint is shown in
+   * its place; the query comes back once the final ranking arrives. null = not matching.
+   */
+  let matchingQuery: string | null = null;
+
+  const idlePlaceholder = () => {
+    if (lastProgress && isSyncing(lastProgress.state)) {
+      input.placeholder = t(activeLocale, 'syncingPlaceholder', { username });
+    } else {
+      placeholder.restart();
+    }
+  };
+
+  const startMatching = (query: string) => {
+    matchingQuery = query;
+    placeholder.stop();
+    input.value = '';
+    input.placeholder = t(activeLocale, 'matchingPlaceholder');
+    input.classList.add('matching');
+    input.setAttribute('aria-busy', 'true');
+  };
+
+  /** `restore`: put the query back (ranking done / failed). False when the user already typed something new. */
+  const endMatching = (restore: boolean) => {
+    if (matchingQuery === null) return;
+    if (restore) {
+      input.value = matchingQuery;
+      input.setSelectionRange(matchingQuery.length, matchingQuery.length);
+    }
+    matchingQuery = null;
+    input.classList.remove('matching');
+    input.removeAttribute('aria-busy');
+    idlePlaceholder();
+  };
+
   const submit = () => {
     typewriter.finish();
     const value = input.value.trim();
-    if (value) handlers.onSubmit(value);
+    if (!value) return;
+    // Queries too short for Jev only get keyword results, which arrive at once: no matching phase
+    if (value.length >= MIN_JEV_QUERY_LENGTH) startMatching(value);
+    handlers.onSubmit(value);
   };
   searchButton.addEventListener('click', () => {
     submit();
@@ -235,6 +279,7 @@ export function createPanel(username: string, handlers: PanelHandlers, localeSet
     input.addEventListener(type, (event) => event.stopPropagation());
   }
   input.addEventListener('input', () => {
+    endMatching(false); // The user is typing a new query: do not bring the old one back over it
     updateSelection(-1); // Query changed, Enter should search again instead of opening the stale result
     if (input.value.trim() === '') handlers.onClear();
   });
@@ -272,9 +317,10 @@ export function createPanel(username: string, handlers: PanelHandlers, localeSet
   }
 
   function renderResults(): void {
-    list.replaceChildren(...results.map((repo, i) => renderItem(repo, i, i === selected)));
-    input.setAttribute('aria-expanded', String(results.length > 0));
     const view = lastView;
+    const isFinal = view !== null && !view.loading;
+    list.replaceChildren(...results.map((repo, i) => renderItem(repo, i, i === selected, isFinal)));
+    input.setAttribute('aria-expanded', String(results.length > 0));
     status.hidden = !view || !(view.loading || (view.hasQuery && results.length === 0));
     status.className = view?.loading ? 'loading' : 'empty';
     status.textContent = view?.loading ? t(activeLocale, 'scoring') : t(activeLocale, 'noResults');
@@ -290,11 +336,8 @@ export function createPanel(username: string, handlers: PanelHandlers, localeSet
       button.setAttribute('aria-label', t(activeLocale, key));
     }
     retry.textContent = t(activeLocale, 'retry');
-    if (lastProgress && isSyncing(lastProgress.state)) {
-      input.placeholder = t(activeLocale, 'syncingPlaceholder', { username });
-    } else {
-      placeholder.restart();
-    }
+    if (matchingQuery !== null) input.placeholder = t(activeLocale, 'matchingPlaceholder');
+    else idlePlaceholder();
     renderProgressLabel();
     renderResults();
     updateSelection(selected);
@@ -326,7 +369,7 @@ export function createPanel(username: string, handlers: PanelHandlers, localeSet
       if (syncing) {
         placeholder.stop();
         input.placeholder = t(activeLocale, 'syncingPlaceholder', { username });
-      } else if (wasSyncing) {
+      } else if (wasSyncing && matchingQuery === null) {
         placeholder.restart(); // Starts the rotator only right after sync ends (or on first state); periodic progress refreshes never interrupt it
       }
       progress.hidden = p.state !== 'error';
@@ -343,6 +386,7 @@ export function createPanel(username: string, handlers: PanelHandlers, localeSet
     setError: (message) => {
       errorBanner.textContent = message;
       errorBanner.hidden = message === '';
+      if (message !== '') endMatching(true);
     },
     setResults: (view) => {
       // Replaces in place with the latest ranking; keeps the selected repo selected when possible
@@ -352,6 +396,7 @@ export function createPanel(username: string, handlers: PanelHandlers, localeSet
       selected = previous ? results.findIndex((r) => r.fullName === previous) : -1;
       renderResults();
       updateSelection(selected);
+      if (!view.loading) endMatching(true); // Final ranking is in: the best match now has its thumbs-up
     },
   };
 }
